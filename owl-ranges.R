@@ -45,25 +45,25 @@ p <- ggplot(ranges,
   geom_linerange(size = 2) +
   
   geom_text(aes(y = upper_limit, label = size), # plot body size as text above the range bar
-            nudge_y = 200, # move it up so it doesn't overlap with the bar
+            nudge_y = 150, # move it up so it doesn't overlap with the bar
             colour = "black", # otherwise it will plot based on bar colour, which is hard to read
-            size = 5) + # uses different font size scale from theme
+            size = 3) + # uses different font size scale from theme
   
   scale_colour_manual(values = cbPalette) + # use custom colours specified above
   
   # see theme() documentation; lots of customization potential
-  theme(axis.text.x = element_text(angle = 90, # english names plotted vertically under x axis
-                                   hjust = 1, # aligned
-                                   vjust = 0.5, 
-                                   size = 14), 
-        axis.title.y = element_text(size = 16),
+  theme(axis.text.x = element_text(angle = 70, # english names plotted vertically under x axis
+                                   hjust = 1, # alignment
+                                   vjust = 1, 
+                                   size = 14),
+        axis.title.x = element_text(size = 16),
         axis.text.y = element_text(size = 14),
+        axis.title.y = element_text(size = 16),
         legend.text = element_text(face = "italic", # italicized genera
                                    size = 14),
         legend.title = element_text(face = "plain", # but keep plain text for legend title
                                     size = 16)) + # make it bigger
-  
-  labs(x = "", # no x axis label; names are obvious enough
+  labs(x = "Species", # no x axis label; names are obvious enough
        y = "Elevation (m)", 
        colour = "Genus") # this is the lable for the legend
 
