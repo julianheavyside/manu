@@ -29,43 +29,45 @@ glimpse(ranges)
 # visualize the elevation distributions of each species -------------------
 
 ##  change plot colour defaults (this is specific to the number of genera; add more if adding genera, or just stick to default (drop the scale_colour_manual() layer)
+
+# hand pick 8 ugliest colours available
 manu_palette <- c("purple", "orange", "blue", "forestgreen", "red", "#0072B2", "cyan3", "#CC79A7")
 
 ## store the plot as an object
-p <- ggplot(ranges, 
-            aes(x = reorder(x = reorder(x = name, # reorder species names (on the x axis) by body size
-                                    X = size, # see reorder() documentation
-                                    FUN = max), # or use min if you want 
-                            X = genus, # then reorder that by unique values of genus
-                            FUN = unique), 
-                ymin = lower_limit, # line_range() will draw from this point...
-                ymax = upper_limit, # ...to this point
-                colour = genus)) + # colour code by genus
-
-  geom_linerange(size = 2) +
+p <- ggplot(ranges, aes(x = reorder(x = reorder(x = name, X = upper_limit, FUN = max), X = genus, FUN = unique), # reorder names by size, then reorder that by genus. see reorder() documentation if needed
+                        
+                        ymin = lower_limit, # line_range() will draw from this point...
+                        
+                        ymax = upper_limit, # ...to this point
+                        
+                        colour = genus)) + # colour code by genus
+  
+  geom_linerange(size = 5) +
   
   geom_text(aes(y = upper_limit, label = size), # plot body size as text above the range bar
+            
             nudge_y = 150, # move it up so it doesn't overlap with the bar
-            colour = "black", # otherwise it will plot based on bar colour, which is hard to read
-            size = 3) + # uses different font size scale from theme
+            
+            colour = "black", # otherwise it will plot based on bar colour
+            
+            size = 4) + # uses different font size scale from theme
   
   scale_colour_manual(values = cbPalette) + # use custom colours specified above
   
   # see theme() documentation; lots of customization potential
-  theme(axis.text.x = element_text(angle = 70, # english names plotted vertically under x axis
-                                   hjust = 1, # alignment
-                                   vjust = 1, 
-                                   size = 14),
+  theme(axis.text.x = element_text(angle = 70, hjust = 1, vjust = 1, size = 14),
+        
         axis.title.x = element_text(size = 16),
+        
         axis.text.y = element_text(size = 14),
+        
         axis.title.y = element_text(size = 16),
-        legend.text = element_text(face = "italic", # italicized genera
-                                   size = 14),
-        legend.title = element_text(face = "plain", # but keep plain text for legend title
-                                    size = 16)) + # make it bigger
-  labs(x = "Species", # no x axis label; names are obvious enough
-       y = "Elevation (m)", 
-       colour = "Genus") # this is the lable for the legend
+        
+        legend.text = element_text(face = "italic", size = 14), # italicized genera
+        
+        legend.title = element_text(face = "plain", size = 16)) + # plain text title
+  
+  labs(x = "Species", y = "Elevation (m)", colour = "Genus") 
 
 # print the object to see it
 print(p)
